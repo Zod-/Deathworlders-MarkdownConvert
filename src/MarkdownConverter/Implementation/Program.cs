@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.IO;
+using Markdig;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace MarkdownConverter
@@ -12,6 +13,8 @@ namespace MarkdownConverter
         [FileExists]
         public string MarkdownFile { get; set; }
 
+
+
         private static int Main(string[] args)
         {
             return CommandLineApplication.Execute<Program>(args);
@@ -20,11 +23,15 @@ namespace MarkdownConverter
         private int OnExecute()
         {
             var markdown = File.ReadAllText(MarkdownFile);
-
-            var chapterYamlText = YamlUtil.GetYamlHeader(markdown, "---");
+            var chapterYamlText = MetaUtils.GetYamlHeader(markdown);
             markdown = markdown.Remove(0, chapterYamlText.Length);
-            var chapterMeta = YamlUtil.GetMetaFromYaml(chapterYamlText);
 
+            var chapterMeta = MetaUtils.GetMetaFromYaml(chapterYamlText);
+            var indexMeta = MetaUtils.FindBookIndexMeta(MarkdownFile);
+            var imageMeta = MetaUtils.FindBookCoverMeta(MarkdownFile);
+            var mergedMeta = MetaUtils.MergeMeta(indexMeta, chapterMeta, imageMeta);
+
+            var html = Markdown.ToHtml(markdown);
 
             return 0;
         }
