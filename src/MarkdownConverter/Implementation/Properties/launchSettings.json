@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "MarkdownConverter": {
-      "commandName": "Project",
-      "commandLineArgs": "\"B:\\git\\deathworlders\\content\\books\\deathworlders\\chapter-47-fallout.md\""
-    }
-  }
-}
