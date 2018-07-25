@@ -48,9 +48,8 @@ namespace MarkdownConverter
 
         private static IEnumerable<string> SplitIntoChapters(string html, string chapterSplit)
         {
-            var lines = html.Split("\n");
             var buffer = new StringBuilder();
-            foreach (var line in lines)
+            foreach (var line in html.Split("\n"))
             {
                 if (Regex.IsMatch(line, chapterSplit) && buffer.Length != 0)
                 {
