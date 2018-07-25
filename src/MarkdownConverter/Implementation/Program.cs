@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Markdig;
 using MarkdownConverter.Properties;
 using McMaster.Extensions.CommandLineUtils;
 using net.vieapps.Components.Utility.Epub;
+using OpenHtmlToPdf;
 
 namespace MarkdownConverter
 {
@@ -42,7 +45,7 @@ namespace MarkdownConverter
             var chaptersHtml = SplitIntoChapters(html, "Date Point").ToList();
 
             GenerateEpub(MarkdownFile.Replace(".md", ".epub"), chaptersHtml, mergedMeta);
-
+            GeneratePdf(MarkdownFile.Replace(".md", ".pdf"), chaptersHtml, mergedMeta);
             return 0;
         }
 
@@ -74,22 +77,48 @@ namespace MarkdownConverter
 
             epub.AddTitle(meta.Title);
             epub.AddAuthor(meta.Author);
+
+            var chapterNumber = 0;
+
             if (meta.CoverImageFile?.Exists == true)
             {
                 var coverImageId = epub.AddImageData(meta.CoverImageFile.Name, File.ReadAllBytes(meta.CoverImageFile.FullName));
                 epub.AddMetaItem("cover", coverImageId);
+
+                var coverPage = Resources.epub_cover_template.Replace("{cover}", meta.CoverImageFile.Name);
+                epub.AddXhtmlData($"page{chapterNumber}.xhtml", coverPage);
+                chapterNumber++;
             }
 
-            var chapterTemplate = Resources.epub_template.Replace("{title}", meta.Title);
 
-            for (var i = 0; i < chaptersHtml.Count; i++)
+            var chapterTemplate = Resources.epub_template.Replace("{title}", meta.Title);
+            for (var i = 0; i < chaptersHtml.Count; i++, chapterNumber++)
             {
-                var chapterFile = $"page{i}.xhtml";
+                var chapterFile = $"page{chapterNumber}.xhtml";
                 var chapterContent = chapterTemplate.Replace("{body}", chaptersHtml[i]);
                 epub.AddXhtmlData(chapterFile, chapterContent);
             }
 
             epub.Generate(path);
+        }
+
+        public static void GeneratePdf(string path, IEnumerable<string> chaptersHtml, MetaInformation meta)
+        {
+            var joinedChapters = string.Join("\n<div class=\"pagebreak\"></div>\n", chaptersHtml);
+
+            var content = Resources.pdf_template
+                .Replace("{title}", meta.Title)
+                .Replace("{style}", Resources.style)
+                .Replace("{body}", joinedChapters)
+                .Replace("{cover}", string.Empty);
+
+
+            var pdf = Pdf.From(content)
+                .OfSize(PaperSize.A4)
+                .WithTitle(meta.Title)
+                .Comressed();
+
+            File.WriteAllBytes(path, pdf.Content());
         }
     }
 }

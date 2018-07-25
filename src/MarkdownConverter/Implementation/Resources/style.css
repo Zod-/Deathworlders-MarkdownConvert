@@ -1,3 +1,6 @@
+.pagebreak {
+    page-break-before: always;
+}
 body {
     margin: 0;
     padding: 0;

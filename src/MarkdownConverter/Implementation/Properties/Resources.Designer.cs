@@ -64,6 +64,31 @@ namespace MarkdownConverter.Properties {
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
         ///&lt;head&gt;
+        ///    &lt;title&gt;Cover&lt;/title&gt;
+        ///    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+        ///    &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;style.css&quot; /&gt;
+        ///    &lt;style type=&quot;text/css&quot;&gt;
+        ///        @page {
+        ///            padding: 0;
+        ///            margin: 0;
+        ///        }
+        ///    &lt;/style&gt;
+        ///&lt;/head&gt;
+        ///&lt;body&gt;
+        ///    &lt;img src=&quot;{cover}&quot; alt=&quot;Girl in a jacket&quot;&gt;
+        ///&lt;/body&gt;
+        ///&lt;/html&gt;.
+        /// </summary>
+        internal static string epub_cover_template {
+            get {
+                return ResourceManager.GetString("epub_cover_template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+        ///&lt;head&gt;
         ///  &lt;title&gt;{title}&lt;/title&gt;
         ///  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
         ///  &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;style.css&quot; /&gt;
@@ -89,7 +114,7 @@ namespace MarkdownConverter.Properties {
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
         ///&lt;head&gt;
-        ///  &lt;title&gt;{0}&lt;/title&gt;
+        ///  &lt;title&gt;{title}&lt;/title&gt;
         ///  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
         ///  &lt;style type=&quot;text/css&quot;&gt;
         ///    {style}
@@ -107,7 +132,10 @@ namespace MarkdownConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to body {
+        ///   Looks up a localized string similar to .pagebreak {
+        ///    page-break-before: always;
+        ///}
+        ///body {
         ///    margin: 0;
         ///    padding: 0;
         ///    overflow-x: hidden;
