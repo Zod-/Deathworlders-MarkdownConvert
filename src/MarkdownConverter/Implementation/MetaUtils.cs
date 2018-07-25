@@ -46,7 +46,7 @@ namespace MarkdownConverter
                 {
                     mergedMeta.Author = meta.Author;
                 }
-                if (!String.IsNullOrEmpty(meta.CoverImageFile))
+                if (meta.CoverImageFile?.Exists == true)
                 {
                     mergedMeta.CoverImageFile = meta.CoverImageFile;
                 }
@@ -90,7 +90,7 @@ namespace MarkdownConverter
 
                 return new MetaInformation
                 {
-                    CoverImageFile = coverFile
+                    CoverImageFile = new FileInfo(coverFile)
                 };
             }
 

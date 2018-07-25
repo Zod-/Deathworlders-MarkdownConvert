@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace MarkdownConverter
 {
@@ -6,7 +7,7 @@ namespace MarkdownConverter
     {
         public string Author { get; set; }
         public string Title { get; set; }
-        public string CoverImageFile { get; set; }
+        public FileInfo CoverImageFile { get; set; }
         public DateTime PublishDate { get; set; }
     }
 }
