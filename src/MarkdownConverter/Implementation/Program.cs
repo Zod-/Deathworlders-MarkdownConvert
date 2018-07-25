@@ -73,6 +73,8 @@ namespace MarkdownConverter
             var epub = new Document();
             epub.AddBookIdentifier(Guid.NewGuid().ToString());
             epub.AddLanguage("English");
+            //TODO Publish date
+            epub.AddMetaItem("dc:date", meta.PublishDate.ToString("YYYY-MM-DD"));
             epub.AddStylesheetData("style.css", Resources.style);
 
             epub.AddTitle(meta.Title);
@@ -90,13 +92,13 @@ namespace MarkdownConverter
                 chapterNumber++;
             }
 
-
             var chapterTemplate = Resources.epub_template.Replace("{title}", meta.Title);
             for (var i = 0; i < chaptersHtml.Count; i++, chapterNumber++)
             {
                 var chapterFile = $"page{chapterNumber}.xhtml";
                 var chapterContent = chapterTemplate.Replace("{body}", chaptersHtml[i]);
                 epub.AddXhtmlData(chapterFile, chapterContent);
+                //TODO Navpoint
             }
 
             epub.Generate(path);
@@ -106,11 +108,14 @@ namespace MarkdownConverter
         {
             var joinedChapters = string.Join("\n<div class=\"pagebreak\"></div>\n", chaptersHtml);
 
+            var cover = string.Empty;
+            //TODO Cover image
+
             var content = Resources.pdf_template
                 .Replace("{title}", meta.Title)
                 .Replace("{style}", Resources.style)
                 .Replace("{body}", joinedChapters)
-                .Replace("{cover}", string.Empty);
+                .Replace("{cover}", cover);
 
 
             var pdf = Pdf.From(content)
