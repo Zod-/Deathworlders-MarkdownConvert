@@ -13,7 +13,7 @@ namespace MarkdownConverter
             var headerEnd = text.IndexOf(StartEndIndicator, headerStart + 1, StringComparison.InvariantCulture);
             if (headerStart == -1 || headerEnd == -1)
             {
-                return String.Empty;
+                return string.Empty;
             }
             var header = text.Substring(headerStart, headerEnd + StartEndIndicator.Length);
             return header;
@@ -29,7 +29,7 @@ namespace MarkdownConverter
             };
 
             var date = chapterYaml.FindValue("date");
-            if (!String.IsNullOrEmpty(date))
+            if (!string.IsNullOrEmpty(date))
             {
                 meta.PublishDate = DateTime.Parse(date);
             }
@@ -42,7 +42,11 @@ namespace MarkdownConverter
             var mergedMeta = new MetaInformation();
             foreach (var meta in metas)
             {
-                if (!String.IsNullOrEmpty(meta.Author))
+                if (meta == null)
+                {
+                    continue;
+                }
+                if (!string.IsNullOrEmpty(meta.Author))
                 {
                     mergedMeta.Author = meta.Author;
                 }
@@ -50,7 +54,7 @@ namespace MarkdownConverter
                 {
                     mergedMeta.CoverImageFile = meta.CoverImageFile;
                 }
-                if (!String.IsNullOrEmpty(meta.Title))
+                if (!string.IsNullOrEmpty(meta.Title))
                 {
                     mergedMeta.Title = $"{mergedMeta.Title} {meta.Title}";
                 }
