@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
+using Xamarin.Yaml.Parser;
 
 namespace MarkdownConverter
 {
@@ -20,7 +22,13 @@ namespace MarkdownConverter
 
         private int OnExecute()
         {
-            Console.WriteLine($"Hello {MarkdownFile}");
+            var markdown = File.ReadAllText(MarkdownFile);
+
+            var chapterYamlText = YamlUtil.GetYamlHeader(markdown, "---");
+            markdown = markdown.Remove(0, chapterYamlText.Length);
+            var chapterMeta = YamlUtil.GetMetaFromYaml(chapterYamlText);
+
+
             return 0;
         }
     }
