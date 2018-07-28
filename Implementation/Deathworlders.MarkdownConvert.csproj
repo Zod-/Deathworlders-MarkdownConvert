@@ -10,9 +10,13 @@
     <PackageProjectUrl>https://github.com/Zod-/MarkdownConverter</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Zod-/MarkdownConverter</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.2.0.0</Version>
-    <AssemblyName>Deathworlders.MarkdownConvert</AssemblyName>
+    <AssemblyName>dotnet-deathworlders-md-convert</AssemblyName>
     <RootNamespace>Deathworlders.MarkdownConvert</RootNamespace>
+    <Product>Deathworlders.MarkdownConvert</Product>
+    <PackageId>dotnet-deathworlders-md-convert</PackageId>
+	
+    <Version Condition=" '$(BUILD_BUILDNUMBER)' == '' ">0.0.0.1-local</Version>
+    <Version Condition=" '$(BUILD_BUILDNUMBER)' != '' ">$(BUILD_BUILDNUMBER)</Version>
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
   </PropertyGroup>
