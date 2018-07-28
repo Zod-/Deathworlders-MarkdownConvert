@@ -1,4 +1,4 @@
-﻿namespace Deathworlders.MarkdownConverter
+﻿namespace Deathworlders.MarkdownConvert
 {
     public class Chapter
     {

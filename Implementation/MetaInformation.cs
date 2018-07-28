@@ -2,7 +2,7 @@
 using System.IO;
 using YamlDotNet.Serialization;
 
-namespace Deathworlders.MarkdownConverter
+namespace Deathworlders.MarkdownConvert
 {
     public class MetaInformation
     {

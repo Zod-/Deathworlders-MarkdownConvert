@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using Deathworlders.MarkdownConverter.Properties;
+using Deathworlders.MarkdownConvert.Properties;
 using DinkToPdf;
 using Markdig;
 using McMaster.Extensions.CommandLineUtils;
 using net.vieapps.Components.Utility.Epub;
 
-namespace Deathworlders.MarkdownConverter
+namespace Deathworlders.MarkdownConvert
 {
     [HelpOption]
     public class Program
