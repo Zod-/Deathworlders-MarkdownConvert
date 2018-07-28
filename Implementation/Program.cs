@@ -115,8 +115,18 @@ namespace Deathworlders.MarkdownConvert
 
             var converter = new BasicConverter(new PdfTools());
 
-            var bytes = converter.Convert(pdfDocument);
-            File.WriteAllBytes(path, bytes);
+            try
+            {
+                var bytes = converter.Convert(pdfDocument);
+                File.WriteAllBytes(path, bytes);
+            }
+            catch (DllNotFoundException e)
+            {
+                Console.Error.WriteLine("Missing assemblies. Make sure libwkhtmltox is with the tool and" +
+                                        " zlib1g fontconfig libfreetype6 libx11-6 libxext6 libxrender1 are installed.");
+                Console.Error.WriteLine(e);
+                throw;
+            }
         }
     }
 }
