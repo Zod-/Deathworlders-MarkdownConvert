@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using Markdig;
+﻿using Markdig;
 using MarkdownConverter.Properties;
 using McMaster.Extensions.CommandLineUtils;
 using net.vieapps.Components.Utility.Epub;
 using OpenHtmlToPdf;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
 
 namespace MarkdownConverter
 {
@@ -22,7 +18,6 @@ namespace MarkdownConverter
         [Argument(0, Description = "The markdown.md file to be converted.")]
         [FileExists]
         public string MarkdownFile { get; set; }
-
 
 
         private static int Main(string[] args)
@@ -42,33 +37,15 @@ namespace MarkdownConverter
             var mergedMeta = MetaUtils.MergeMeta(indexMeta, chapterMeta, imageMeta);
 
             var html = Markdown.ToHtml(markdown);
-            var chaptersHtml = SplitIntoChapters(html, "Date Point").ToList();
+            var chaptersHtml = ChapterUtils.SplitIntoChapters(html, "Date Point").ToList();
+            var chapters = ChapterUtils.GetMetaForChapters(chaptersHtml).ToList();
 
-            GenerateEpub(MarkdownFile.Replace(".md", ".epub"), chaptersHtml, mergedMeta);
-            GeneratePdf(MarkdownFile.Replace(".md", ".pdf"), chaptersHtml, mergedMeta);
+            GenerateEpub(MarkdownFile.Replace(".md", ".epub"), chapters, mergedMeta);
+            GeneratePdf(MarkdownFile.Replace(".md", ".pdf"), chapters, mergedMeta);
             return 0;
         }
 
-        private static IEnumerable<string> SplitIntoChapters(string html, string chapterSplit)
-        {
-            var buffer = new StringBuilder();
-            foreach (var line in html.Split("\n"))
-            {
-                if (Regex.IsMatch(line, chapterSplit) && buffer.Length != 0)
-                {
-                    yield return buffer.ToString();
-                    buffer.Clear();
-                }
-                buffer.AppendLine(line);
-            }
-
-            if (buffer.Length != 0)
-            {
-                yield return buffer.ToString();
-            }
-        }
-
-        private static void GenerateEpub(string path, IReadOnlyList<string> chaptersHtml, MetaInformation meta)
+        private static void GenerateEpub(string path, IReadOnlyList<Chapter> chaptersHtml, MetaInformation meta)
         {
             var epub = new Document();
             epub.AddBookIdentifier(Guid.NewGuid().ToString());
@@ -95,18 +72,18 @@ namespace MarkdownConverter
             var chapterTemplate = Resources.epub_template.Replace("{title}", meta.Title);
             for (var i = 0; i < chaptersHtml.Count; i++, chapterNumber++)
             {
+                var chapter = chaptersHtml[i];
                 var chapterFile = $"page{chapterNumber}.xhtml";
-                var chapterContent = chapterTemplate.Replace("{body}", chaptersHtml[i]);
+                var chapterContent = chapterTemplate.Replace("{body}", chapter.Html);
                 epub.AddXhtmlData(chapterFile, chapterContent);
-                //TODO Navpoint
             }
 
             epub.Generate(path);
         }
 
-        public static void GeneratePdf(string path, IEnumerable<string> chaptersHtml, MetaInformation meta)
+        private static void GeneratePdf(string path, IEnumerable<Chapter> chaptersHtml, MetaInformation meta)
         {
-            var joinedChapters = string.Join("\n<div class=\"pagebreak\"></div>\n", chaptersHtml);
+            var joinedChapters = string.Join("\n<div class=\"pagebreak\"></div>\n", chaptersHtml.Select(c => c.Html));
 
             var cover = string.Empty;
             //TODO Cover image
@@ -124,6 +101,32 @@ namespace MarkdownConverter
                 .Comressed();
 
             File.WriteAllBytes(path, pdf.Content());
+        }
+    }
+
+    public class Chapter
+    {
+        public string DatePoint { get; set; }
+        public string Location { get; set; }
+        public string Protagonist { get; set; }
+        public string Html { get; set; }
+
+        public string GetNavPoint(int chapter)
+        {
+            if (!string.IsNullOrEmpty(Protagonist))
+            {
+                return Protagonist;
+            }
+            if (!string.IsNullOrEmpty(Location))
+            {
+                return Location;
+            }
+            if (!string.IsNullOrEmpty(DatePoint))
+            {
+                return DatePoint;
+            }
+
+            return $"Chapter {chapter}";
         }
     }
 }
