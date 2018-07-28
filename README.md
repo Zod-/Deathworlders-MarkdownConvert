@@ -12,6 +12,7 @@ dotnet tool install -g dotnet-deathworlders-md-convert
 
 ```sh
 dotnet deathworlders-md-convert chapter.md
+dotnet-deathworlders-md-convert chapter.md
 ```
 
 This will create a `chapter.pdf` and `chapter.epub` on the same path as the markdown file. Out paths is currently not supported.
