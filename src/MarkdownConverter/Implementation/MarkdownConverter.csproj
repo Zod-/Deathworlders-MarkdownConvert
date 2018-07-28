@@ -18,7 +18,7 @@
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.2.5" />
     <PackageReference Include="OpenHtmlToPdf" Version="1.12.0" />
     <PackageReference Include="VIEApps.Components.Utility.Epub" Version="10.2.3.1806" />
-    <PackageReference Include="Xamarin.Yaml.Parser" Version="1.1.9" />
+    <PackageReference Include="YamlDotNet" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Xamarin.Yaml.Parser;
+using YamlDotNet.Serialization;
 
 namespace MarkdownConverter
 {
@@ -22,20 +22,10 @@ namespace MarkdownConverter
         public static MetaInformation GetMetaFromYaml(string yamlText)
         {
             yamlText = yamlText.Replace(StartEndIndicator, string.Empty).Trim();
-
-            var chapterYaml = new Parser(new ParserConfig(), yamlText);
-            var meta = new MetaInformation
-            {
-                Author = chapterYaml.FindValue("author"),
-                Title = chapterYaml.FindValue("title")
-            };
-
-            var date = chapterYaml.FindValue("date");
-            if (!string.IsNullOrEmpty(date))
-            {
-                meta.PublishDate = DateTime.Parse(date);
-            }
-
+            var deserializer = new DeserializerBuilder()
+                .IgnoreUnmatchedProperties()
+                .Build();
+            var meta = deserializer.Deserialize<MetaInformation>(yamlText);
             return meta;
         }
 
