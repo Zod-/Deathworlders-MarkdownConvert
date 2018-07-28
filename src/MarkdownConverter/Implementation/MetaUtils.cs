@@ -21,7 +21,7 @@ namespace MarkdownConverter
 
         public static MetaInformation GetMetaFromYaml(string yamlText)
         {
-            yamlText = yamlText.Replace(StartEndIndicator, "");
+            yamlText = yamlText.Replace(StartEndIndicator, string.Empty).Trim();
 
             var chapterYaml = new Parser(new ParserConfig(), yamlText);
             var meta = new MetaInformation
