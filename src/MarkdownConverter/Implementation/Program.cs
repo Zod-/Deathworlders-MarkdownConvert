@@ -2,12 +2,12 @@
 using MarkdownConverter.Properties;
 using McMaster.Extensions.CommandLineUtils;
 using net.vieapps.Components.Utility.Epub;
-using OpenHtmlToPdf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using DinkToPdf;
 
 namespace MarkdownConverter
 {
@@ -88,21 +88,35 @@ namespace MarkdownConverter
             var joinedChapters = string.Join("\n<div class=\"pagebreak\"></div>\n", chaptersHtml.Select(c => c.Html));
 
             var cover = string.Empty;
-            //TODO Cover image
 
-            var content = Resources.pdf_template
+            var chapterContent = Resources.pdf_template
                 .Replace("{title}", meta.Title)
                 .Replace("{style}", Resources.style)
                 .Replace("{body}", joinedChapters)
                 .Replace("{cover}", cover);
 
+            var settings = new GlobalSettings
+            {
+                UseCompression = true,
+                PaperSize = PaperKind.A4,
+                DocumentTitle = meta.Title
+            };
 
-            var pdf = Pdf.From(content)
-                .OfSize(PaperSize.A4)
-                .WithTitle(meta.Title)
-                .Comressed();
+            var chapterSettings = new ObjectSettings
+            {
+                HtmlContent = chapterContent
+            };
 
-            File.WriteAllBytes(path, pdf.Content());
+            var pdfDocument = new HtmlToPdfDocument
+            {
+                GlobalSettings = settings,
+                Objects = { chapterSettings }
+            };
+
+            var converter = new BasicConverter(new PdfTools());
+
+            var bytes = converter.Convert(pdfDocument);
+            File.WriteAllBytes(path, bytes);
         }
     }
 }
