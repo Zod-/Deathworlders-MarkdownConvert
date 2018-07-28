@@ -2,7 +2,13 @@
 This tool is made for the online book series [deathworlders](https://github.com/deathworlders/online). It converts markdown to epub and pdf to make distributable versions of the series.
 
 ## Requirements
-[.NET Core Runtime](https://www.microsoft.com/net/download) v2.1.2 or higher
+[.NET Core SDK](https://www.microsoft.com/net/download) v2.1.300 or higher.
+
+These packages on linux:
+```sh
+sudo apt-get install zlib1g fontconfig libfreetype6 libx11-6 libxext6 libxrender1
+```
+
 ## Installation
 ```sh
 dotnet tool install -g dotnet-deathworlders-md-convert
