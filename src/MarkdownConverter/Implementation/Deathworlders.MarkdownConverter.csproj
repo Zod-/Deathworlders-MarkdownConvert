@@ -11,6 +11,8 @@
     <RepositoryUrl>https://github.com/Zod-/MarkdownConverter</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Version>0.2.0.0</Version>
+    <AssemblyName>Deathworlders.MarkdownConverter</AssemblyName>
+    <RootNamespace>Deathworlders.MarkdownConverter</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

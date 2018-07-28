@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27906.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownConverter", "Implementation\MarkdownConverter.csproj", "{1508C16E-95BE-4C93-AA20-1E1808BFBD24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deathworlders.MarkdownConverter", "Implementation\Deathworlders.MarkdownConverter.csproj", "{1508C16E-95BE-4C93-AA20-1E1808BFBD24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

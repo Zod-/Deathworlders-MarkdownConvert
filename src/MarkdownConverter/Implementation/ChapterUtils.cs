@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace MarkdownConverter
+namespace Deathworlders.MarkdownConverter
 {
     public static class ChapterUtils
     {
