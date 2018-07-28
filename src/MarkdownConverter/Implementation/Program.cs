@@ -77,7 +77,7 @@ namespace MarkdownConverter
                 var chapterFile = $"page{chapterNumber}.xhtml";
                 var chapterContent = chapterTemplate.Replace("{body}", chapter.Html);
                 epub.AddXhtmlData(chapterFile, chapterContent);
-                epub.AddNavPoint(chapter.GetNavPoint(chapterNumber), chapterFile, chapterNumber);
+                epub.AddNavPoint(chapter.GetNavPoint(i + 1), chapterFile, chapterNumber);
             }
 
             epub.Generate(path);
