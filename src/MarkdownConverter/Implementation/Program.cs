@@ -66,6 +66,7 @@ namespace MarkdownConverter
 
                 var coverPage = Resources.epub_cover_template.Replace("{cover}", meta.CoverImageFile.Name);
                 epub.AddXhtmlData($"page{chapterNumber}.xhtml", coverPage);
+                epub.AddNavPoint("Cover", $"page{chapterNumber}.xhtml", chapterNumber);
                 chapterNumber++;
             }
 
@@ -76,6 +77,7 @@ namespace MarkdownConverter
                 var chapterFile = $"page{chapterNumber}.xhtml";
                 var chapterContent = chapterTemplate.Replace("{body}", chapter.Html);
                 epub.AddXhtmlData(chapterFile, chapterContent);
+                epub.AddNavPoint(chapter.GetNavPoint(chapterNumber), chapterFile, chapterNumber);
             }
 
             epub.Generate(path);
