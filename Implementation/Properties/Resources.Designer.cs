@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace Deathworlders.MarkdownConvert.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -36,7 +39,7 @@ namespace Deathworlders.MarkdownConvert.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MarkdownConverter.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Deathworlders.MarkdownConvert.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -72,7 +75,7 @@ namespace Deathworlders.MarkdownConvert.Properties {
         ///    &lt;/style&gt;
         ///&lt;/head&gt;
         ///&lt;body&gt;
-        ///    &lt;img src=&quot;{cover}&quot; alt=&quot;Girl in a jacket&quot;&gt;
+        ///    &lt;img src=&quot;{cover}&quot;&gt;&lt;/img&gt;
         ///&lt;/body&gt;
         ///&lt;/html&gt;.
         /// </summary>
@@ -118,7 +121,8 @@ namespace Deathworlders.MarkdownConvert.Properties {
         ///  &lt;/style&gt;
         ///&lt;/head&gt;
         ///&lt;body&gt;
-        ///  {body}
+        ///{cover}
+        ///{body}
         ///&lt;/body&gt;
         ///&lt;/html&gt;.
         /// </summary>
