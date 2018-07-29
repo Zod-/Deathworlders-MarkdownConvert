@@ -19,6 +19,17 @@ namespace Deathworlders.MarkdownConvert
         [FileExists]
         public string MarkdownFile { get; set; }
 
+        [Option(CommandOptionType.SingleValue,
+            Description = "The folder the resulting epub and pdf should be saved to.",
+            Template = "-o|--out")]
+        [LegalFilePath]
+        public string OutFolder { get; set; }
+
+        [Option(CommandOptionType.SingleOrNoValue,
+            Description = "In the out folder keep its parent folder.",
+            Template = "-k|--keep-parent-folder")]
+        [LegalFilePath]
+        public bool KeepParentFolder { get; set; } = true;
 
         private static int Main(string[] args)
         {
@@ -40,8 +51,11 @@ namespace Deathworlders.MarkdownConvert
             var chaptersHtml = ChapterUtils.SplitIntoChapters(html, "Date Point").ToList();
             var chapters = ChapterUtils.GetMetaForChapters(chaptersHtml).ToList();
 
-            GenerateEpub(MarkdownFile.Replace(".md", ".epub"), chapters, mergedMeta);
-            GeneratePdf(MarkdownFile.Replace(".md", ".pdf"), chapters, mergedMeta);
+            var epubPath = FileUtils.GetFilePath(MarkdownFile, ".epub", OutFolder, KeepParentFolder);
+            var pdfPath = FileUtils.GetFilePath(MarkdownFile, ".pdf", OutFolder, KeepParentFolder);
+            FileUtils.CreateDirectory(epubPath);
+            GenerateEpub(epubPath, chapters, mergedMeta);
+            GeneratePdf(pdfPath, chapters, mergedMeta);
             return 0;
         }
 
